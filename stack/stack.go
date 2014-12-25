@@ -13,13 +13,13 @@ func New() *Stack {
 	return &Stack{arr: nil, n: 0}
 }
 
-func (s *Stack) Push(item interface{}) {
+func (s *Stack) Push(v interface{}) {
 	// Grow capacity if needed
 	if s.n == cap(s.arr) {
 		s.resize((s.n + 1) * 2)
 	}
 
-	s.arr[s.n] = item
+	s.arr[s.n] = v
 	s.n++
 }
 
@@ -29,7 +29,7 @@ func (s *Stack) Pop() interface{} {
 	}
 
 	s.n--
-	item := s.arr[s.n]
+	v := s.arr[s.n]
 	s.arr[s.n] = nil
 
 	// Shrink if capacity is too big
@@ -37,7 +37,7 @@ func (s *Stack) Pop() interface{} {
 		s.resize((cap(s.arr) - 1) / 2)
 	}
 
-	return item
+	return v
 }
 
 func (s *Stack) Peek() interface{} {
