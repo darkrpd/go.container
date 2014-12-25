@@ -76,7 +76,7 @@ func verifyLenAndCap(t *testing.T, s *Stack, l, c int) {
 	if s.Len() != l {
 		t.Errorf("Len must be %d", l)
 	}
-	if s.Cap() != c {
+	if cap(s.arr) != c {
 		t.Errorf("Cap must be %d", c)
 	}
 }

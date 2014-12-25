@@ -51,10 +51,6 @@ func (s *Stack) Len() int {
 	return s.n
 }
 
-func (s *Stack) Cap() int {
-	return cap(s.arr)
-}
-
 func (s *Stack) resize(n int) {
 	newArr := make([]interface{}, n)
 	copy(newArr, s.arr)
