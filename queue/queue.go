@@ -4,69 +4,28 @@
 
 package queue
 
+import "github.com/dgiagio/go.container/deque"
+
 type Queue struct {
-	arr   []interface{}
-	front int
-	back  int
-	n     int
+	deque.Deque
 }
 
 func New() *Queue {
-	return &Queue{arr: nil, front: 0, back: 0, n: 0}
+	return &Queue{deque.Deque{}}
 }
 
 func (q *Queue) Push(v interface{}) {
-	// Grow capacity if needed
-	if q.n == cap(q.arr) {
-		q.resize((q.n + 1) * 2)
-	}
-
-	q.arr[q.back] = v
-	q.back++
-	if q.back == cap(q.arr) {
-		q.back = 0 // wrap-around
-	}
-	q.n++
+	q.Deque.PushBack(v)
 }
 
 func (q *Queue) Pop() interface{} {
-	if q.n <= 0 {
-		return nil
-	}
-
-	v := q.arr[q.front]
-	q.arr[q.front] = nil
-	q.front++
-	if q.front == cap(q.arr) {
-		q.front = 0 // wrap-around
-	}
-	q.n--
-
-	// Shrink if capacity is too big
-	if q.n > 0 && q.n <= cap(q.arr)/4 {
-		q.resize((cap(q.arr) - 1) / 2)
-	}
-
-	return v
+	return q.Deque.PopFront()
 }
 
 func (q *Queue) Peek() interface{} {
-	if q.n <= 0 {
-		return nil
-	}
-	return q.arr[q.front]
+	return q.Deque.PeekFront()
 }
 
 func (q *Queue) Len() int {
-	return q.n
-}
-
-func (q *Queue) resize(n int) {
-	newArr := make([]interface{}, n)
-	for i := 0; i < q.n; i++ {
-		newArr[i] = q.arr[(q.front+i)%cap(q.arr)]
-	}
-	q.arr = newArr
-	q.front = 0
-	q.back = q.n
+	return q.Deque.Len()
 }
