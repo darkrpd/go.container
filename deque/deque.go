@@ -5,57 +5,112 @@
 package deque
 
 type Deque struct {
-	arr []interface{}
+	arr   []interface{}
+	front int
+	back  int
+	n     int
 }
 
 func New() *Deque {
-	return &Deque{arr: nil}
-}
-
-func (d *Deque) Len() int {
-	return len(d.arr)
+	return &Deque{arr: nil, front: 0, back: 0, n: 0}
 }
 
 func (d *Deque) PushFront(v interface{}) {
-	d.arr = append([]interface{}{v}, d.arr...)
+	if d.n == cap(d.arr) {
+		d.resize((d.n + 1) * 2)
+	}
+
+	if d.front == 0 {
+		d.front = cap(d.arr) - 1
+	} else {
+		d.front--
+	}
+
+	d.arr[d.front] = v
+	d.n++
 }
 
 func (d *Deque) PushBack(v interface{}) {
-	d.arr = append(d.arr, v)
+	if d.n == cap(d.arr) {
+		d.resize((d.n + 1) * 2)
+	}
+
+	d.arr[d.back] = v
+	d.back++
+	if d.back == cap(d.arr) {
+		d.back = 0 // wrap-around
+	}
+	d.n++
 }
 
 func (d *Deque) PopFront() interface{} {
-	if d.arr == nil || len(d.arr) <= 0 {
+	if d.n <= 0 {
 		return nil
 	}
-	v := d.arr[0]
-	d.arr[0] = nil
-	d.arr = d.arr[1:]
+
+	v := d.arr[d.front]
+	d.arr[d.front] = nil
+	d.front++
+	if d.front == cap(d.arr) {
+		d.front = 0 // wrap-around
+	}
+	d.n--
+
+	if d.n > 0 && d.n <= cap(d.arr)/4 {
+		d.resize((cap(d.arr) - 1) / 2)
+	}
 	return v
 }
 
 func (d *Deque) PopBack() interface{} {
-	if d.arr == nil || len(d.arr) <= 0 {
+	if d.n <= 0 {
 		return nil
 	}
-	n := len(d.arr)
-	v := d.arr[n-1]
-	d.arr[n-1] = nil
-	d.arr = d.arr[:n-1]
+
+	if d.back == 0 {
+		d.back = cap(d.arr) - 1
+	} else {
+		d.back--
+	}
+
+	v := d.arr[d.back]
+	d.arr[d.back] = nil
+	d.n--
+
+	if d.n > 0 && d.n <= cap(d.arr)/4 {
+		d.resize((cap(d.arr) - 1) / 2)
+	}
 	return v
 }
 
 func (d *Deque) PeekFront() interface{} {
-	if d.arr == nil || len(d.arr) <= 0 {
+	if d.n <= 0 {
 		return nil
 	}
-	return d.arr[0]
+	return d.arr[d.front]
 }
 
 func (d *Deque) PeekBack() interface{} {
-	if d.arr == nil || len(d.arr) <= 0 {
+	if d.n <= 0 {
 		return nil
 	}
-	n := len(d.arr)
-	return d.arr[n-1]
+
+	if d.back == 0 {
+		return d.arr[cap(d.arr)-1]
+	}
+	return d.arr[d.back-1]
+}
+
+func (d *Deque) Len() int {
+	return d.n
+}
+
+func (d *Deque) resize(n int) {
+	newArr := make([]interface{}, n)
+	for i := 0; i < d.n; i++ {
+		newArr[i] = d.arr[(d.front+i)%cap(d.arr)]
+	}
+	d.arr = newArr
+	d.front = 0
+	d.back = d.n
 }
