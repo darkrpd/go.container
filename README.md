@@ -55,7 +55,7 @@ import (
 )
 
 func main() {
-  // Comparator for int type
+	// Comparator for int type
 	comp := func(a, b interface{}) bool { return a.(int) > b.(int) }
 	
 	pq := prioq.New(comp)
