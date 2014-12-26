@@ -45,6 +45,27 @@ func main() {
 }
 ```
 
+# deque (Double-ended Queue)
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/dgiagio/go.container/deque"
+)
+
+func main() {
+	d := deque.New()
+	d.PushBack(2)
+	d.PushBack(3)
+	d.PushFront(1)
+	for d.Len() != 0 {
+		v := d.PopFront()
+		fmt.Printf("dv=%v\n", v)
+	}
+}
+```
+
 # prioq (Priority Queue)
 ```go
 package main
