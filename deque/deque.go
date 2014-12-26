@@ -16,9 +16,7 @@ func New() *Deque {
 }
 
 func (d *Deque) PushFront(v interface{}) {
-	if d.n == cap(d.arr) {
-		d.resize((d.n + 1) * 2)
-	}
+	d.growIfNeeded()
 
 	if d.front == 0 {
 		d.front = cap(d.arr) - 1
@@ -31,9 +29,7 @@ func (d *Deque) PushFront(v interface{}) {
 }
 
 func (d *Deque) PushBack(v interface{}) {
-	if d.n == cap(d.arr) {
-		d.resize((d.n + 1) * 2)
-	}
+	d.growIfNeeded()
 
 	d.arr[d.back] = v
 	d.back++
@@ -56,9 +52,7 @@ func (d *Deque) PopFront() interface{} {
 	}
 	d.n--
 
-	if d.n > 0 && d.n <= cap(d.arr)/4 {
-		d.resize((cap(d.arr) - 1) / 2)
-	}
+	d.shrinkIfNeeded()
 	return v
 }
 
@@ -77,9 +71,7 @@ func (d *Deque) PopBack() interface{} {
 	d.arr[d.back] = nil
 	d.n--
 
-	if d.n > 0 && d.n <= cap(d.arr)/4 {
-		d.resize((cap(d.arr) - 1) / 2)
-	}
+	d.shrinkIfNeeded()
 	return v
 }
 
@@ -113,4 +105,16 @@ func (d *Deque) resize(n int) {
 	d.arr = newArr
 	d.front = 0
 	d.back = d.n
+}
+
+func (d *Deque) growIfNeeded() {
+	if d.n == cap(d.arr) {
+		d.resize((d.n + 1) * 2)
+	}
+}
+
+func (d *Deque) shrinkIfNeeded() {
+	if d.n > 0 && d.n <= cap(d.arr)/4 {
+		d.resize((cap(d.arr) - 1) / 2)
+	}
 }
