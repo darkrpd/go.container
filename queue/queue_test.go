@@ -8,6 +8,10 @@ import "testing"
 
 func TestQueue(t *testing.T) {
 	q := New()
+	if !q.Empty() {
+		t.Fatal("Queue must be empty")
+	}
+
 	verifyLenAndCap(t, q, 0, 0)
 
 	q.Push(1)
@@ -101,6 +105,15 @@ func TestQueue(t *testing.T) {
 	n = q.Pop()
 	verifyValue(t, n, 3)
 	verifyLenAndCap(t, q, 0, 2)
+
+	q.Push(1)
+	if q.Empty() {
+		t.Fatal("Deque must NOT be empty")
+	}
+	q.Clear()
+	if !q.Empty() {
+		t.Fatal("Deque must be empty")
+	}
 }
 
 func verifyLenAndCap(t *testing.T, q *Queue, l, c int) {

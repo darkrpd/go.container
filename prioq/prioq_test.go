@@ -20,6 +20,10 @@ func prioqMax(a, b interface{}) bool {
 
 func TestPriorityQueue(t *testing.T) {
 	pq := New(prioqMin)
+	if !pq.Empty() {
+		t.Fatal("PriorityQueue must be empty")
+	}
+
 	pq.Push(entry{v: 1})
 	pq.Push(entry{v: 2})
 	pq.Push(entry{v: 4})
@@ -33,7 +37,7 @@ func TestPriorityQueue(t *testing.T) {
 	pq.Push(entry{v: 32})
 	pq.Push(entry{v: 59})
 	pq.Push(entry{v: 20})
-	for pq.Len() != 0 {
+	for !pq.Empty() {
 		t.Logf("Len=%d\n", pq.Len())
 		v := pq.Pop()
 		t.Logf("v=%v\n", v)
@@ -55,9 +59,18 @@ func TestPriorityQueue(t *testing.T) {
 	pq.Push(entry{v: 32})
 	pq.Push(entry{v: 59})
 	pq.Push(entry{v: 20})
-	for pq.Len() != 0 {
+	for !pq.Empty() {
 		t.Logf("Len=%d\n", pq.Len())
 		v := pq.Pop()
 		t.Logf("v=%v\n", v)
+	}
+
+	pq.Push(entry{v: 1})
+	if pq.Empty() {
+		t.Fatal("PriorityQueue must NOT be empty")
+	}
+	pq.Clear()
+	if !pq.Empty() {
+		t.Fatal("PriorityQueue must be empty")
 	}
 }

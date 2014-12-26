@@ -8,6 +8,10 @@ import "testing"
 
 func TestStack(t *testing.T) {
 	s := New()
+	if !s.Empty() {
+		t.Fatal("Stack must be empty")
+	}
+
 	verifyLenAndCap(t, s, 0, 0)
 
 	s.Push(1)
@@ -74,6 +78,10 @@ func TestStack(t *testing.T) {
 	n = s.Pop()
 	verifyValue(t, n, nil)
 	verifyLenAndCap(t, s, 0, 2)
+
+	if !s.Empty() {
+		t.Fatal("Stack must be empty")
+	}
 }
 
 func verifyLenAndCap(t *testing.T, s *Stack, l, c int) {

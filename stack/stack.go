@@ -39,6 +39,15 @@ func (s *Stack) Peek() interface{} {
 	return s.arr[s.n-1]
 }
 
+func (s *Stack) Clear() {
+	s.arr = nil
+	s.n = 0
+}
+
+func (s *Stack) Empty() bool {
+	return s.n == 0
+}
+
 func (s *Stack) Len() int {
 	return s.n
 }

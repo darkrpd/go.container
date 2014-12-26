@@ -93,6 +93,17 @@ func (d *Deque) PeekBack() interface{} {
 	return d.arr[d.back-1]
 }
 
+func (d *Deque) Clear() {
+	d.arr = nil
+	d.front = 0
+	d.back = 0
+	d.n = 0
+}
+
+func (d *Deque) Empty() bool {
+	return d.n == 0
+}
+
 func (d *Deque) Len() int {
 	return d.n
 }

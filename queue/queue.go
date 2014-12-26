@@ -26,6 +26,14 @@ func (q *Queue) Peek() interface{} {
 	return q.Deque.PeekFront()
 }
 
+func (q *Queue) Clear() {
+	q.Deque.Clear()
+}
+
+func (q *Queue) Empty() bool {
+	return q.Deque.Empty()
+}
+
 func (q *Queue) Len() int {
 	return q.Deque.Len()
 }

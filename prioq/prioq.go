@@ -42,7 +42,6 @@ type PriorityQueue struct {
 
 func New(comp Comparator) *PriorityQueue {
 	pq := &PriorityQueue{h: prioHeap{comp: comp, arr: nil}}
-	heap.Init(&pq.h)
 	return pq
 }
 
@@ -52,6 +51,14 @@ func (pq *PriorityQueue) Push(v interface{}) {
 
 func (pq *PriorityQueue) Pop() interface{} {
 	return heap.Pop(&pq.h)
+}
+
+func (pq *PriorityQueue) Clear() {
+	pq.h.arr = nil
+}
+
+func (pq *PriorityQueue) Empty() bool {
+	return len(pq.h.arr) == 0
 }
 
 func (pq *PriorityQueue) Len() int {
